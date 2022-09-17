@@ -1,11 +1,10 @@
 # Core Imports
+from audioop import add
 import time
 import random
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, UploadFile
 import os
-import matplotlib.pyplot as plt
 from fastapi import Response
-import json
 from fastapi.middleware.cors import CORSMiddleware
 # External Dependency Imports
 from imageio import imwrite
@@ -17,7 +16,7 @@ from pretrained.vgg import Vgg16Pretrained
 from utils import misc as misc
 from utils.misc import load_path_for_pytorch
 from utils.stylize import produce_stylization
-
+from utils.frame import add_frame
 #FastAPI 
 app = FastAPI()
 origins = ["*"]
@@ -35,7 +34,8 @@ np.random.seed(0)
 torch.manual_seed(0)
 
 def style_img_path(style):
-    images = os.listdir('/code/img')
+    #images = os.listdir('/code/img')when using docker
+    images = os.listdir('./img')
     if style in images:
         img_path = os.path.join('img',style)
     return img_path
@@ -96,7 +96,8 @@ def run(content_path=None,file=None, high_res=False,style_path=None,output_path=
 @app.post("/")
 def file_process(file: UploadFile, style_name:str):
     result = run(file=file.file, style_path=style_img_path(style_name),output_path='./outputs/output.jpg',alpha=0.7)
-    
+    img = add_frame('./outputs/output.jpg')
+    img.save('./outputs/output.jpg')
     url = "https://api.imgbb.com/1/upload"
     payload = {}
     files = {
