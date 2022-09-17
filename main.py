@@ -35,7 +35,7 @@ np.random.seed(0)
 torch.manual_seed(0)
 
 def style_img_path(style):
-    images = os.listdir('./img')
+    images = os.listdir('/code/img')
     if style in images:
         img_path = os.path.join('img',style)
     return img_path
