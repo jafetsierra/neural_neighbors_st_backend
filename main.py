@@ -40,7 +40,7 @@ def style_img_path(style):
         img_path = os.path.join('img',style)
     return img_path
 
-def run(content_path=None,file=None, high_res=False,style_path=None,output_path=None,sz=512, alpha=0.75):
+def run(content_path=None,file=None, gpu=False,high_res=False,style_path=None,output_path=None,sz=512, alpha=0.75):
     # Interpret command line arguments
     max_scls = 4
     if high_res:
@@ -48,7 +48,7 @@ def run(content_path=None,file=None, high_res=False,style_path=None,output_path=
         sz = 1024
     flip_aug = False
     content_loss = False
-    misc.USE_GPU = True
+    misc.USE_GPU = gpu
     content_weight = 1. - alpha
     dont_colorize = False
     # Error checking for arguments
