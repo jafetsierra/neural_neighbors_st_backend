@@ -6,4 +6,3 @@ python-multipart
 uvicorn
 imageio
 matplotlib
-opencv-python
